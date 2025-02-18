@@ -73,7 +73,7 @@ pipeline {
             }
         }
 
-        stage('Deployment QA') {  // Déploiement sur l'environnement QA
+        stage('Deployment QA ') {  // Déploiement sur l'environnement QA
             environment {
                 KUBECONFIG = credentials("config")  
             }
