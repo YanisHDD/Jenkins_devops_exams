@@ -98,7 +98,12 @@ pipeline {
         stage('Check Branch') {
             steps {
                 script {
-                    env.BRANCH_NAME = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
+                    env.BRANCH_NAME = sh(
+                        returnStdout: true,
+                        s cript: '''
+                        git branch -a --contains HEAD | grep -E 'remotes/origin/[^ ]+' | sed 's#remotes/origin/##' | head -1
+                        '''
+                    ).trim()
                     echo "Current branch is: ${env.BRANCH_NAME}"
                 }
             }
