@@ -93,16 +93,12 @@ pipeline {
             environment {
                 KUBECONFIG = credentials("config")  
             }
-            when {
-                expression { env.BRANCH_NAME == 'master' }    
-            }
             steps {
                 timeout(time: 15, unit: "MINUTES") {  // Validation manuelle avant déploiement en prod
                     input message: 'Do you want to deploy to production?', ok: 'Yes'
                 }
                 script {
                     sh '''
-                        echo "Branch name is: ${env.BRANCH_NAME}"
                         rm -Rf .kube
                         mkdir .kube
                         cat $KUBECONFIG > .kube/config
