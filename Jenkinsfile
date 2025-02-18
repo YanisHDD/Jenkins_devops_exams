@@ -84,6 +84,7 @@ pipeline {
                         mkdir .kube
                         cat $KUBECONFIG > .kube/config
                         helm upgrade --install fastapiapp-qa ./charts --namespace qa --set service.nodePort=30010 --set image.tag=v.${DOCKER_TAG}
+                        echo "Current branch: ${env.BRANCH_NAME}"
                     '''
                 }
             }
@@ -92,9 +93,6 @@ pipeline {
         stage('Deployment to Prod') {  // Déploiement sur l'environnement Prod
             environment {
                 KUBECONFIG = credentials("config")  
-            }
-            script {
-                echo "Current branch: ${env.BRANCH_NAME}"
             }
             when {
                 expression {
