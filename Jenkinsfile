@@ -89,12 +89,20 @@ pipeline {
             }
         }
 
+        stage('Check Branch') {
+            steps {
+                script {
+                    echo "Current branch is: ${env.BRANCH_NAME}"
+                }
+            }
+        }
+        
         stage('Deployment Prod') {  // Déploiement sur l'environnement Prod
             environment {
                 KUBECONFIG = credentials("config")  
             }
             when {
-                expression { env.BRANCH_NAME == 'master' }      
+                branch 'master'      
             }
             steps {
                 timeout(time: 15, unit: "MINUTES") {  // Validation manuelle avant déploiement en prod
