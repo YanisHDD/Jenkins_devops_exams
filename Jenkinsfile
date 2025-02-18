@@ -15,7 +15,7 @@ pipeline {
                 script {
                     env.BRANCH_NAME = sh(
                         returnStdout: true,
-                        s cript: '''
+                        script: '''
                         git branch -a --contains HEAD | grep -E 'remotes/origin/[^ ]+' | sed 's#remotes/origin/##' | head -1
                         '''
                     ).trim()
