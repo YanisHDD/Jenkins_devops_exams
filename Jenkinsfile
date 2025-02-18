@@ -93,6 +93,9 @@ pipeline {
             environment {
                 KUBECONFIG = credentials("config")  
             }
+            script {
+                echo "Current branch: ${env.BRANCH_NAME}"
+            }
             when {
                 expression {
                     return env.BRANCH_NAME == 'master'  // Vérifier si la branche est master
