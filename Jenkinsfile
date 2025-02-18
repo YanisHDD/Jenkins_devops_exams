@@ -67,7 +67,7 @@ pipeline {
                         rm -Rf .kube
                         mkdir .kube
                         cat $KUBECONFIG > .kube/config
-                        helm upgrade --install fastapiapp-staging ./charts --namespace staging --set service.nodePort=30009 --set image.tag=v.${DOCKER_TAG}
+                        helm upgrade --install fastapiapp-staging ./charts --namespace staging --set service.nodePort=30012 --set image.tag=v.${DOCKER_TAG}
                     '''
                 }
             }
