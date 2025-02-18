@@ -39,7 +39,7 @@ pipeline {
             }
         }
 
-        stage('Deployment to Dev') {  // Déploiement sur l'environnement Dev
+        stage('Deployment Dev') {  // Déploiement sur l'environnement Dev
             environment {
                 KUBECONFIG = credentials("config")  // Récupérer le kubeconfig depuis Jenkins
             }
@@ -57,7 +57,7 @@ pipeline {
 
         
 
-        stage('Deployment to Staging') {  // Déploiement sur l'environnement Staging
+        stage('Deployment Staging') {  // Déploiement sur l'environnement Staging
             environment {
                 KUBECONFIG = credentials("config")  
             }
@@ -73,7 +73,7 @@ pipeline {
             }
         }
 
-        stage('Deployment to QA') {  // Déploiement sur l'environnement QA
+        stage('Deployment QA') {  // Déploiement sur l'environnement QA
             environment {
                 KUBECONFIG = credentials("config")  
             }
@@ -89,12 +89,12 @@ pipeline {
             }
         }
 
-        stage('Deployment to Prod') {  // Déploiement sur l'environnement Prod
+        stage('Deployment Prod') {  // Déploiement sur l'environnement Prod
             environment {
                 KUBECONFIG = credentials("config")  
             }
             when {
-                branch 'master'      
+                expression { env.BRANCH_NAME == 'master' }    
             }
             steps {
                 timeout(time: 15, unit: "MINUTES") {  // Validation manuelle avant déploiement en prod
@@ -102,6 +102,7 @@ pipeline {
                 }
                 script {
                     sh '''
+                        echo "Branch name is: ${env.BRANCH_NAME}"
                         rm -Rf .kube
                         mkdir .kube
                         cat $KUBECONFIG > .kube/config
