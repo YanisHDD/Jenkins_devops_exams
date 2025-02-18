@@ -93,6 +93,9 @@ pipeline {
             environment {
                 KUBECONFIG = credentials("config")  
             }
+            when {
+                branch 'master'      
+            }
             steps {
                 timeout(time: 15, unit: "MINUTES") {  // Validation manuelle avant déploiement en prod
                     input message: 'Do you want to deploy to production?', ok: 'Yes'
