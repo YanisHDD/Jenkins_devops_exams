@@ -89,6 +89,12 @@ pipeline {
             }
         }
 
+        stage('Checkout') {
+            steps {
+                checkout scm // Récupère le code et les métadonnées de la branche
+            }
+        }
+        
         stage('Check Branch') {
             steps {
                 script {
@@ -96,7 +102,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Deployment Prod') {  // Déploiement sur l'environnement Prod
             environment {
                 KUBECONFIG = credentials("config")  
