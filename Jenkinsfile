@@ -15,8 +15,8 @@ pipeline {
                     // Construire les images Docker à partir des Dockerfiles
                     sh '''
                         docker rm -f jenkins || true
-                        docker build -t $DOCKER_ID/$DOCKER_IMAGE_1:$DOCKER_TAG -f ./cast-service/Dockerfile .
-                        docker build -t $DOCKER_ID/$DOCKER_IMAGE_2:$DOCKER_TAG -f ;/movie-service/Dockerfile .
+                        docker build -t $DOCKER_ID/$DOCKER_IMAGE_1:$DOCKER_TAG  ./cast-service
+                        docker build -t $DOCKER_ID/$DOCKER_IMAGE_2:$DOCKER_TAG  ./movie-service
                         sleep 6
                     '''
                 }
