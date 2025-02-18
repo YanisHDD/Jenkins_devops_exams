@@ -1,12 +1,12 @@
 pipeline {
     environment {
-        DOCKER_ID = "yanishdd"  // Ton Docker ID
-        DOCKER_IMAGE_1 = "cast_service"  // Première image Docker
-        DOCKER_IMAGE_2 = "movie_service"  // Deuxième image Docker
-        DOCKER_TAG = "v.${BUILD_ID}.0"  // Tag de l'image basé sur l'ID du build
+        DOCKER_ID = "yanishdd"  
+        DOCKER_IMAGE_1 = "cast_service"  
+        DOCKER_IMAGE_2 = "movie_service"  
+        DOCKER_TAG = "v.${BUILD_ID}.0"  
     }
 
-    agent any  // Jenkins peut sélectionner n'importe quel agent disponible
+    agent any  
 
     stages {
         stage('Docker Build') {  // Construire les images Docker
@@ -59,7 +59,7 @@ pipeline {
 
         stage('Deployment to Staging') {  // Déploiement sur l'environnement Staging
             environment {
-                KUBECONFIG = credentials("config")  // Récupérer le kubeconfig depuis Jenkins
+                KUBECONFIG = credentials("config")  
             }
             steps {
                 script {
@@ -75,7 +75,7 @@ pipeline {
 
         stage('Deployment to QA') {  // Déploiement sur l'environnement QA
             environment {
-                KUBECONFIG = credentials("config")  // Récupérer le kubeconfig depuis Jenkins
+                KUBECONFIG = credentials("config")  
             }
             steps {
                 script {
@@ -91,7 +91,7 @@ pipeline {
 
         stage('Deployment to Prod') {  // Déploiement sur l'environnement Prod
             environment {
-                KUBECONFIG = credentials("config")  // Récupérer le kubeconfig depuis Jenkins
+                KUBECONFIG = credentials("config")  
             }
             steps {
                 timeout(time: 15, unit: "MINUTES") {  // Validation manuelle avant déploiement en prod
@@ -107,20 +107,6 @@ pipeline {
                     '''
                 }
             }
-        }
-    }
-
-    post {
-        always {
-            echo 'Pipeline finished'
-        }
-
-        success {
-            echo 'Pipeline succeeded!'
-        }
-
-        failure {
-            echo 'Pipeline failed!'
         }
     }
 }
