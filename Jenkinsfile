@@ -49,11 +49,13 @@ pipeline {
                         rm -Rf .kube
                         mkdir .kube
                         cat $KUBECONFIG > .kube/config
-                        helm upgrade --install app fastapi --set service.nodePort=30008 --namespace dev --set image.tag=${DOCKER_TAG}
+                        helm upgrade --install fastapiapp-dev ./charts --namespace dev --set service.nodePort=30008 --set image.tag=v.${DOCKER_TAG}
                     '''
                 }
             }
         }
+
+        
 
         stage('Deployment to Staging') {  // Déploiement sur l'environnement Staging
             environment {
@@ -65,7 +67,23 @@ pipeline {
                         rm -Rf .kube
                         mkdir .kube
                         cat $KUBECONFIG > .kube/config
-                        helm upgrade --install app fastapi --set service.nodePort=30009 --namespace staging --set image.tag=${DOCKER_TAG}
+                        helm upgrade --install fastapiapp-staging ./charts --namespace staging --set service.nodePort=30009 --set image.tag=v.${DOCKER_TAG}
+                    '''
+                }
+            }
+        }
+
+        stage('Deployment to QA') {  // Déploiement sur l'environnement QA
+            environment {
+                KUBECONFIG = credentials("config")  // Récupérer le kubeconfig depuis Jenkins
+            }
+            steps {
+                script {
+                    sh '''
+                        rm -Rf .kube
+                        mkdir .kube
+                        cat $KUBECONFIG > .kube/config
+                        helm upgrade --install fastapiapp-qa ./charts --namespace qa --set service.nodePort=30010 --set image.tag=v.${DOCKER_TAG}
                     '''
                 }
             }
@@ -84,7 +102,8 @@ pipeline {
                         rm -Rf .kube
                         mkdir .kube
                         cat $KUBECONFIG > .kube/config
-                        helm upgrade --install app fastapi --set service.nodePort=30011 --namespace prod --set image.tag=${DOCKER_TAG}
+                        helm upgrade --install fastapiapp-prod ./charts --namespace prod --set service.nodePort=30011 --set image.tag=v.${DOCKER_TAG}
+
                     '''
                 }
             }
