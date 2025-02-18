@@ -9,6 +9,36 @@ pipeline {
     agent any  
 
     stages {
+
+        stage('Check Branch') {
+            steps {
+                script {
+                    env.BRANCH_NAME = sh(
+                        returnStdout: true,
+                        s cript: '''
+                        git branch -a --contains HEAD | grep -E 'remotes/origin/[^ ]+' | sed 's#remotes/origin/##' | head -1
+                        '''
+                    ).trim()
+                    echo "Current branch is: ${env.BRANCH_NAME}"
+                }
+            }
+        }
+
+        stage('Check Branch') {
+            steps {
+                script {
+                    env.BRANCH_NAME = sh(
+                        returnStdout: true,
+                        script: '''
+                            git branch -a --contains HEAD | grep -E 'remotes/origin/[^ ]+' | sed 's#remotes/origin/##' | head -1
+                        '''
+                    ).trim()
+                    echo "Current branch is: ${env.BRANCH_NAME}"
+                }
+            }
+        }
+
+
         stage('Docker Build') {  // Construire les images Docker
             steps {
                 script {
@@ -85,26 +115,6 @@ pipeline {
                         cat $KUBECONFIG > .kube/config
                         helm upgrade --install fastapiapp-qa ./charts --namespace qa --set service.nodePort=30010 --set image.tag=v.${DOCKER_TAG}
                     '''
-                }
-            }
-        }
-
-        stage('Checkout') {
-            steps {
-                checkout scm // Récupère le code et les métadonnées de la branche
-            }
-        }
-
-        stage('Check Branch') {
-            steps {
-                script {
-                    env.BRANCH_NAME = sh(
-                        returnStdout: true,
-                        s cript: '''
-                        git branch -a --contains HEAD | grep -E 'remotes/origin/[^ ]+' | sed 's#remotes/origin/##' | head -1
-                        '''
-                    ).trim()
-                    echo "Current branch is: ${env.BRANCH_NAME}"
                 }
             }
         }
