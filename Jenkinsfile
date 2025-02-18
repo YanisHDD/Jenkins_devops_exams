@@ -94,10 +94,11 @@ pipeline {
                 checkout scm // Récupère le code et les métadonnées de la branche
             }
         }
-        
+
         stage('Check Branch') {
             steps {
                 script {
+                    env.BRANCH_NAME = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
                     echo "Current branch is: ${env.BRANCH_NAME}"
                 }
             }
