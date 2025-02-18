@@ -93,7 +93,7 @@ pipeline {
             environment {
                 KUBECONFIG = credentials("config")  
             }
-             when {
+            when {
                 branch 'master'  
             }
             steps {
