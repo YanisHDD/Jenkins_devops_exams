@@ -94,7 +94,9 @@ pipeline {
                 KUBECONFIG = credentials("config")  
             }
             when {
-                branch 'master'  
+                expression {
+                    return env.BRANCH_NAME == 'master'  // Vérifier si la branche est master
+                }         
             }
             steps {
                 timeout(time: 15, unit: "MINUTES") {  // Validation manuelle avant déploiement en prod
