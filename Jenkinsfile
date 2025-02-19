@@ -10,35 +10,6 @@ pipeline {
 
     stages {
 
-        stage('Check Branch') {
-            steps {
-                script {
-                    env.BRANCH_NAME = sh(
-                        returnStdout: true,
-                        script: '''
-                        git branch -a --contains HEAD | grep -E 'remotes/origin/[^ ]+' | sed 's#remotes/origin/##' | head -1
-                        '''
-                    ).trim()
-                    echo "Current branch is: ${env.BRANCH_NAME}"
-                }
-            }
-        }
-
-        stage('Check Branch') {
-            steps {
-                script {
-                    env.BRANCH_NAME = sh(
-                        returnStdout: true,
-                        script: '''
-                            git branch -a --contains HEAD | grep -E 'remotes/origin/[^ ]+' | sed 's#remotes/origin/##' | head -1
-                        '''
-                    ).trim()
-                    echo "Current branch is: ${env.BRANCH_NAME}"
-                }
-            }
-        }
-
-
         stage('Docker Build') {  // Construire les images Docker
             steps {
                 script {
