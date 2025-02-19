@@ -58,7 +58,7 @@ pipeline {
 
         
 
-        stage('Deployment Staging') {  // Déploiement sur l'environnement Staging
+        stage('Deployment Staging ') {  // Déploiement sur l'environnement Staging
             environment {
                 KUBECONFIG = credentials("config")  
             }
